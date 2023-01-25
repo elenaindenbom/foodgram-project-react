@@ -39,7 +39,7 @@ class Tag(models.Model):
         unique=True,
     )
     slug = models.SlugField(
-        'Адрес',
+        'Слаг',
         unique=True,
         max_length=200,
     )

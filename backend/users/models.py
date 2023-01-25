@@ -31,7 +31,7 @@ class User(AbstractUser):
     )
 
 
-class Follow(models.Model):
+class Subscription(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
