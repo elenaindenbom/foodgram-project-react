@@ -1,4 +1,6 @@
+from django.db.models import Sum
 from rest_framework import viewsets, status
+from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
@@ -18,14 +20,12 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
-    permission_classes = (permissions.AllowAny,)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    permission_classes = (permissions.AllowAny,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^name',)
 
@@ -76,3 +76,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def shopping_cart(self, request, pk):
         return self.post_delete_action(request, pk, ShortRecipeSerializer,
                                        ShoppingCart)
+
+    @action(methods=['get'], detail=False,
+            permission_classes=[permissions.IsAuthenticated])
+    def download_shopping_cart(self, request):
+        ingredients = IngredientAmount.objects.filter(
+            recipe__cart__user=request.user).values(
+            'ingredient__name',
+            'ingredient__measurement_unit').order_by(
+            'ingredient__name').annotate(total_amount=Sum('amount'))
+        shopping_list = 'Cписок покупок:\n' + '\n'.join([
+            f'{ingredient["ingredient__name"]}'
+            f' - {ingredient["total_amount"]}'
+            f'({ingredient["ingredient__measurement_unit"]})'
+            for ingredient in ingredients
+        ])
+        filename = 'shopping_cart.txt'
+        response = HttpResponse(shopping_list, content_type='text/plain')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
