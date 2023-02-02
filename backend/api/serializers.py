@@ -1,9 +1,6 @@
-import base64
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
-from django.core.files.base import ContentFile
-import webcolors
 from drf_base64.fields import Base64ImageField
+from rest_framework import serializers
 
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
