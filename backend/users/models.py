@@ -35,6 +35,9 @@ class User(AbstractUser):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
+    def __str__(self):
+        return self.username
+
 
 class Subscription(models.Model):
     user = models.ForeignKey(
@@ -51,6 +54,7 @@ class Subscription(models.Model):
     )
 
     class Meta:
+        ordering = ['-author_id']
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         constraints = [
