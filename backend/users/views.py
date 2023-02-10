@@ -15,13 +15,14 @@ class CustomUserViewSet(UserViewSet):
 
     @action(detail=False, permission_classes=(permissions.IsAuthenticated,))
     def subscriptions(self, request):
-        user = self.request.user
-        followings = User.objects.filter(following__user=user).all()
+        user = request.user
+        followings = User.objects.filter(following__user=user)
+        pages = self.paginate_queryset(followings)
         serializer = SubscriptionSerializer(
-            followings, many=True,
+            pages, many=True,
             context={'request': request}
         )
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
     @action(methods=['post', 'delete'], detail=True,
             permission_classes=(permissions.IsAuthenticated,))
