@@ -42,6 +42,13 @@ class IngredientAmountCreateSerializer(serializers.ModelSerializer):
         model = IngredientAmount
         fields = ('id', 'amount')
 
+    def validate_amount(self, value):
+        if not (1 <= value <= 30000):
+            raise serializers.ValidationError(
+                'Количество должно быть целым числом от 1 до 30 000'
+            )
+        return value
+
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(

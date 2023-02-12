@@ -123,7 +123,7 @@ class IngredientAmount(models.Model):
             MinValueValidator(
                 1, message='Количество не может быть меньше 1'),
             MaxValueValidator(
-                10000, message='Количество не может быть больше 10000'
+                30000, message='Количество не может быть больше 30000'
             )
         ),
     )
