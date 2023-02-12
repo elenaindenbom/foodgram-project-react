@@ -59,7 +59,6 @@ class Recipe(models.Model):
         verbose_name='Автор рецепта',
         on_delete=models.SET_NULL,
         null=True,
-        blank=False
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -70,7 +69,6 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(
         Tag,
         verbose_name='Теги',
-        blank=False
     )
     image = models.ImageField(
         'Изображение',
@@ -106,6 +104,12 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         default_related_name = 'recipes'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('author', 'name',),
+                name='unique_reipe_author',
+            ),
+        )
 
     def __str__(self):
         return f'{self.name}'
