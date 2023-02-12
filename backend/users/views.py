@@ -33,12 +33,12 @@ class CustomUserViewSet(UserViewSet):
         if request.method == 'POST':
             Subscription.objects.create(user=user, author=author)
             serializer = SubscriptionSerializer(
-                         author, context={'request': request})
+                author, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
             subscription = Subscription.objects.filter(
-                           user=user, author=author)
+                user=user, author=author)
             if subscription:
                 subscription.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)

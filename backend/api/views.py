@@ -6,11 +6,11 @@ from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .filters import RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.serializers import ShortRecipeSerializer
 
+from .filters import RecipeFilter
 from .permissions import AuthorAdminOrReadOnly
 from .serializers import (IngredientSerializer, RecipeCreateSerializer,
                           RecipeReadSerializer, TagSerializer)
@@ -55,7 +55,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         if request.method == 'DELETE':
             chosen_recipe = model.objects.filter(
-                           user=user, recipe=recipe)
+                user=user, recipe=recipe)
             if chosen_recipe:
                 chosen_recipe.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
