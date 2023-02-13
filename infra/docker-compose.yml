@@ -8,8 +8,8 @@ services:
       - ./.env
 
   backend:
-    image: elenabom/foodgram_backend:latest
-    # build: ../backend
+    # image: elenabom/foodgram_backend:latest
+    build: ../backend
     restart: always
     volumes:
       - static_value:/app/static/

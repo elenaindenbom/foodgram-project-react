@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
-# from rest_framework.validators import UniqueTogetherValidator
+from rest_framework.validators import UniqueTogetherValidator
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.serializers import CustomUserSerializer
@@ -58,6 +58,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     )
     ingredients = IngredientAmountCreateSerializer(many=True)
     image = Base64ImageField()
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Recipe
@@ -70,12 +71,12 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'name',
             'text',
             'cooking_time')
-        # validators = [
-        #     UniqueTogetherValidator(
-        #         queryset=Recipe.objects.all(),
-        #         fields=('author', 'name')
-        #     )
-        # ]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Recipe.objects.all(),
+                fields=('author', 'name')
+            )
+        ]
 
     def add_tags_ingredients(self, recipe, tags, ingredients):
         recipe.tags.set(tags)
