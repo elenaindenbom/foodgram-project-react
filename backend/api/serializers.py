@@ -70,12 +70,12 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             'name',
             'text',
             'cooking_time')
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Recipe.objects.all(),
-                fields=('author', 'name')
-            )
-        ]
+        # validators = [
+        #     UniqueTogetherValidator(
+        #         queryset=Recipe.objects.all(),
+        #         fields=('author', 'name')
+        #     )
+        # ]
 
     def add_tags_ingredients(self, recipe, tags, ingredients):
         recipe.tags.set(tags)
