@@ -86,7 +86,7 @@ class Recipe(models.Model):
             MinValueValidator(
                 1, message='Время должно быть больше 1 минуты'),
             MaxValueValidator(
-                2880, message='Время  не должно быть больше 2880 минут')
+                30000, message='Время  не должно быть больше 30000 минут')
         )
     )
     pub_date = models.DateTimeField(
@@ -99,12 +99,6 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         default_related_name = 'recipes'
-        constraints = (
-            models.UniqueConstraint(
-                fields=('author', 'name',),
-                name='unique_reipe_author',
-            ),
-        )
 
     def __str__(self):
         return f'{self.name}'
