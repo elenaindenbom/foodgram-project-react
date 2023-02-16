@@ -44,7 +44,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'api.paginations.LimitPageNumberPagination',
-    'PAGE_SIZE': 6
+    'PAGE_SIZE': 6,
+    'SEARCH_PARAM': 'name',
 }
 
 ROOT_URLCONF = 'foodgram.urls'
